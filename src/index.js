@@ -76,11 +76,27 @@ app.put('/todos/:id', checksExistsUserAccount, (request, response) => {
 });
 
 app.patch('/todos/:id/done', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { id } = request.params;
+  const { user } = request;
+
+  const patchUser = user.todos.find((todos) => todos.id === id);
+
+  patchUser.done = true;
+
+  return response.status(200).send('Atualizado com sucesso.');
 });
 
 app.delete('/todos/:id', checksExistsUserAccount, (request, response) => {
-  // Complete aqui
+  const { id } = request.params;
+  const { user } = request;
+
+  const newTodosList = user.todos.filter((element) => element.id !== id);
+
+  user.todos = newTodosList;
+
+  console.log(newTodosList);
+
+  return response.status(200).send('Deletado com sucesso.')
 });
 
 module.exports = app;
